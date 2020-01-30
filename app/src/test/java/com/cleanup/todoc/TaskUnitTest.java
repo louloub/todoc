@@ -1,6 +1,6 @@
 package com.cleanup.todoc;
 
-import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.model.TaskModelUi;
 
 import org.junit.Test;
 
@@ -20,10 +20,10 @@ import static org.junit.Assert.assertSame;
 public class TaskUnitTest {
     @Test
     public void test_projects() {
-        final Task task1 = new Task(1, 1, "task 1", new Date().getTime());
-        final Task task2 = new Task(2, 2, "task 2", new Date().getTime());
-        final Task task3 = new Task(3, 3, "task 3", new Date().getTime());
-        final Task task4 = new Task(4, 4, "task 4", new Date().getTime());
+        final TaskModelUi task1 = new TaskModelUi(1, 1, "task 1", new Date().getTime());
+        final TaskModelUi task2 = new TaskModelUi(2, 2, "task 2", new Date().getTime());
+        final TaskModelUi task3 = new TaskModelUi(3, 3, "task 3", new Date().getTime());
+        final TaskModelUi task4 = new TaskModelUi(4, 4, "task 4", new Date().getTime());
 
         assertEquals("Projet Tartampion", task1.getProject().getName());
         assertEquals("Projet Lucidia", task2.getProject().getName());
@@ -33,15 +33,15 @@ public class TaskUnitTest {
 
     @Test
     public void test_az_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        final TaskModelUi task1 = new TaskModelUi(1, 1, "aaa", 123);
+        final TaskModelUi task2 = new TaskModelUi(2, 2, "zzz", 124);
+        final TaskModelUi task3 = new TaskModelUi(3, 3, "hhh", 125);
 
-        final ArrayList<Task> tasks = new ArrayList<>();
+        final ArrayList<TaskModelUi> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
-        Collections.sort(tasks, new Task.TaskAZComparator());
+        Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
 
         assertSame(tasks.get(0), task1);
         assertSame(tasks.get(1), task3);
@@ -50,15 +50,15 @@ public class TaskUnitTest {
 
     @Test
     public void test_za_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        final TaskModelUi task1 = new TaskModelUi(1, 1, "aaa", 123);
+        final TaskModelUi task2 = new TaskModelUi(2, 2, "zzz", 124);
+        final TaskModelUi task3 = new TaskModelUi(3, 3, "hhh", 125);
 
-        final ArrayList<Task> tasks = new ArrayList<>();
+        final ArrayList<TaskModelUi> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
-        Collections.sort(tasks, new Task.TaskZAComparator());
+        Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
 
         assertSame(tasks.get(0), task2);
         assertSame(tasks.get(1), task3);
@@ -67,15 +67,15 @@ public class TaskUnitTest {
 
     @Test
     public void test_recent_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        final TaskModelUi task1 = new TaskModelUi(1, 1, "aaa", 123);
+        final TaskModelUi task2 = new TaskModelUi(2, 2, "zzz", 124);
+        final TaskModelUi task3 = new TaskModelUi(3, 3, "hhh", 125);
 
-        final ArrayList<Task> tasks = new ArrayList<>();
+        final ArrayList<TaskModelUi> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
-        Collections.sort(tasks, new Task.TaskRecentComparator());
+        Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
 
         assertSame(tasks.get(0), task3);
         assertSame(tasks.get(1), task2);
@@ -84,15 +84,15 @@ public class TaskUnitTest {
 
     @Test
     public void test_old_comparator() {
-        final Task task1 = new Task(1, 1, "aaa", 123);
-        final Task task2 = new Task(2, 2, "zzz", 124);
-        final Task task3 = new Task(3, 3, "hhh", 125);
+        final TaskModelUi task1 = new TaskModelUi(1, 1, "aaa", 123);
+        final TaskModelUi task2 = new TaskModelUi(2, 2, "zzz", 124);
+        final TaskModelUi task3 = new TaskModelUi(3, 3, "hhh", 125);
 
-        final ArrayList<Task> tasks = new ArrayList<>();
+        final ArrayList<TaskModelUi> tasks = new ArrayList<>();
         tasks.add(task1);
         tasks.add(task2);
         tasks.add(task3);
-        Collections.sort(tasks, new Task.TaskOldComparator());
+        Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
 
         assertSame(tasks.get(0), task1);
         assertSame(tasks.get(1), task2);

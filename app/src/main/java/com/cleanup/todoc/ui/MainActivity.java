@@ -2,12 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +11,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.model.Project;
-import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.model.ProjectModelUi;
+import com.cleanup.todoc.model.TaskModelUi;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +36,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * List of all projects available in the application
      */
-    private final Project[] allProjects = Project.getAllProjects();
+    private final ProjectModelUi[] allProjects = ProjectModelUi.getAllProjects();
 
     /**
      * List of all current tasks of the application
      */
     @NonNull
-    private final ArrayList<Task> tasks = new ArrayList<>();
+    private final ArrayList<TaskModelUi> tasks = new ArrayList<>();
 
     /**
      * The adapter which handles the list of tasks
@@ -134,13 +135,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     @Override
-    public void onDeleteTask(Task task) {
+    public void onDeleteTask(TaskModelUi task) {
         tasks.remove(task);
         updateTasks();
     }
 
     /**
-     * Called when the user clicks on the positive button of the Create Task Dialog.
+     * Called when the user clicks on the positive button of the Create TaskModelUi Dialog.
      *
      * @param dialogInterface the current displayed dialog
      */
@@ -151,9 +152,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             String taskName = dialogEditText.getText().toString();
 
             // Get the selected project to be associated to the task
-            Project taskProject = null;
-            if (dialogSpinner.getSelectedItem() instanceof Project) {
-                taskProject = (Project) dialogSpinner.getSelectedItem();
+            ProjectModelUi taskProject = null;
+            if (dialogSpinner.getSelectedItem() instanceof ProjectModelUi) {
+                taskProject = (ProjectModelUi) dialogSpinner.getSelectedItem();
             }
 
             // If a name has not been set
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 long id = (long) (Math.random() * 50000);
 
 
-                Task task = new Task(
+                TaskModelUi task = new TaskModelUi(
                         id,
                         taskProject.getId(),
                         taskName,
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     /**
-     * Shows the Dialog for adding a Task
+     * Shows the Dialog for adding a TaskModelUi
      */
     private void showAddTaskDialog() {
         final AlertDialog dialog = getAddTaskDialog();
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      *
      * @param task the task to be added to the list
      */
-    private void addTask(@NonNull Task task) {
+    private void addTask(@NonNull TaskModelUi task) {
         tasks.add(task);
         updateTasks();
     }
@@ -224,16 +225,16 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             listTasks.setVisibility(View.VISIBLE);
             switch (sortMethod) {
                 case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
                     break;
                 case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
                     break;
                 case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
                     break;
                 case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
                     break;
 
             }
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner() {
-        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
+        final ArrayAdapter<ProjectModelUi> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (dialogSpinner != null) {
             dialogSpinner.setAdapter(adapter);
