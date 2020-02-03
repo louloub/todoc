@@ -16,6 +16,7 @@
         android:textSize="22sp"
         tools:visibility="gone" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_tasks"
         android:layout_width="match_parent"
