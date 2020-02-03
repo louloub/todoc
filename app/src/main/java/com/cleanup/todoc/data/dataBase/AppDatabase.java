@@ -1,10 +1,12 @@
-package com.cleanup.todoc.data;
+package com.cleanup.todoc.data.dataBase;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.cleanup.todoc.MainApplication;
+import com.cleanup.todoc.data.dao.ProjectDao;
+import com.cleanup.todoc.data.dao.TaskDao;
 import com.cleanup.todoc.data.model.Project;
 import com.cleanup.todoc.data.model.Task;
 
