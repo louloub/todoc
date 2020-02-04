@@ -154,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     @Override
     public void onDeleteTask(TaskModelUi task) {
+
+        mTaskViewModel.deleteTask(task);
+
         tasks.remove(task);
         updateTasks();
     }
@@ -161,55 +164,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * Called when the user clicks on the positive button of the Create TaskModelUi Dialog.
      *
+     * Adds the given task to the list of created tasks.
+     *
      * @param dialogInterface the current displayed dialog
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
 
-        // TODO ; déplacer dans viewModel ?
-
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
-
-        /*// If dialog is open
-        if (dialogEditText != null && dialogSpinner != null) {
-            // Get the name of the task
-            String taskName = dialogEditText.getText().toString();
-
-            // Get the selected project to be associated to the task
-            ProjectModelUi taskProject = null;
-            if (dialogSpinner.getSelectedItem() instanceof ProjectModelUi) {
-                taskProject = (ProjectModelUi) dialogSpinner.getSelectedItem();
-            }
-
-            // If a name has not been set
-            if (taskName.trim().isEmpty()) {
-                dialogEditText.setError(getString(R.string.empty_task_name));
-            }
-            // If both project and name of the task have been set
-            else if (taskProject != null) {
-                // TODO: Replace this by id of persisted task
-                long id = (long) (Math.random() * 50000);
-
-
-                TaskModelUi task = new TaskModelUi(
-                        id,
-                        taskProject.getId(),
-                        taskName,
-                        new Date().getTime()
-                );
-
-                addTask(task);
-
-                dialogInterface.dismiss();
-            }
-            // If name has been set, but project has not been set (this should never occur)
-            else{
-                dialogInterface.dismiss();
-            }
-        }
-        // If dialog is aloready closed
-        else {
-            dialogInterface.dismiss();
-        }*/
     }
 
     /**
@@ -224,16 +185,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         dialogSpinner = dialog.findViewById(R.id.project_spinner);
 
         populateDialogSpinner();
-    }
-
-    /**
-     * Adds the given task to the list of created tasks.
-     *
-     * @param task the task to be added to the list
-     */
-    private void addTask(@NonNull TaskModelUi task) {
-        tasks.add(task);
-        updateTasks();
     }
 
     /**

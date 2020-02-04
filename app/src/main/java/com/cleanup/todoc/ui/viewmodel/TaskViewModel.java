@@ -1,14 +1,19 @@
 package com.cleanup.todoc.ui.viewmodel;
 
+import android.app.MediaRouteButton;
+import android.app.Notification;
 import android.content.DialogInterface;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.data.model.Project;
@@ -19,6 +24,7 @@ import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -28,20 +34,16 @@ public class TaskViewModel extends ViewModel {
     private TaskRepository mTaskRepository;
 
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
+    private TextView lblNoTasks;
+    private RecyclerView listTasks;
+    private SortMethod sortMethod;
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
     }
 
-    /**
-     * List of all current taskModelUiList of the application
-     */
     @NonNull
     private final ArrayList<TaskModelUi> taskModelUiList = new ArrayList<>();
-
-    /*public void addNewTask(String message, Project project){
-        // TODO
-    }*/
 
     public void addNewTask(EditText dialogEditText, Spinner dialogSpinner, DialogInterface dialogInterface) {
         // If dialog is open
@@ -77,8 +79,6 @@ public class TaskViewModel extends ViewModel {
 
                 mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
 
-                // addTask(task);
-
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
@@ -90,6 +90,10 @@ public class TaskViewModel extends ViewModel {
         else {
             dialogInterface.dismiss();
         }
+    }
+
+    public void deleteTask(TaskModelUi task){
+        taskModelUiList.remove(task);
     }
 
     public TaskViewModel(ProjectRoomRepository projectRoomRepository, final TaskRepository taskRepository) {
@@ -128,5 +132,60 @@ public class TaskViewModel extends ViewModel {
         }
 
         return taskModelUi;
+    }
+
+    /**
+     * Updates the list of tasks in the UI
+     */
+    private void updateTasks() {
+        if (taskModelUiList.size() == 0) {
+            lblNoTasks.setVisibility(View.VISIBLE);
+            listTasks.setVisibility(View.GONE);
+        } else {
+            lblNoTasks.setVisibility(View.GONE);
+            listTasks.setVisibility(View.VISIBLE);
+            switch (sortMethod) {
+                case ALPHABETICAL:
+                    Collections.sort(taskModelUiList, new TaskModelUi.TaskAZComparator());
+                    break;
+                case ALPHABETICAL_INVERTED:
+                    Collections.sort(taskModelUiList, new TaskModelUi.TaskZAComparator());
+                    break;
+                case RECENT_FIRST:
+                    Collections.sort(taskModelUiList, new TaskModelUi.TaskRecentComparator());
+                    break;
+                case OLD_FIRST:
+                    Collections.sort(taskModelUiList, new TaskModelUi.TaskOldComparator());
+                    break;
+
+            }
+            mTaskModelUiMediatorLiveData.postValue(taskModelUiList);
+        }
+    }
+
+    /**
+     * List of all possible sort methods for task
+     */
+    private enum SortMethod {
+        /**
+         * Sort alphabetical by name
+         */
+        ALPHABETICAL,
+        /**
+         * Inverted sort alphabetical by name
+         */
+        ALPHABETICAL_INVERTED,
+        /**
+         * Lastly created first
+         */
+        RECENT_FIRST,
+        /**
+         * First created first
+         */
+        OLD_FIRST,
+        /**
+         * No sort
+         */
+        NONE
     }
 }
