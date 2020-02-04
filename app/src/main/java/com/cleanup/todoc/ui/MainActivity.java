@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param dialogInterface the current displayed dialog
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
-
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
     }
 
