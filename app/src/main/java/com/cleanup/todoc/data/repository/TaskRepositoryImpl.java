@@ -26,7 +26,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     public TaskRepositoryImpl() {
         Task task1 = new Task(0,"task numéro 1");
-        Task task2 = new Task(1,"task numéro 2");
+        Task task2 = new Task(0,"task numéro 2");
         List<Task> listTak = new ArrayList<>();
         listTak.add(task1);
         listTak.add(task2);

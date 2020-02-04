@@ -16,10 +16,10 @@ import java.util.List;
 
 public class TaskViewModel extends ViewModel {
 
-    ProjectRepository mProjectRepository;
-    TaskRepository mTaskRepository;
+    private ProjectRepository mProjectRepository;
+    private TaskRepository mTaskRepository;
 
-    MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
+    private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
