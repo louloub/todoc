@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * List of all current tasks of the application
      */
     @NonNull
-    private final ArrayList<TaskModelUi> tasks = new ArrayList<>();
+    private List<TaskModelUi> tasks = new ArrayList<>();
 
     /**
      * The adapter which handles the list of tasks
@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             @Override
             public void onChanged(List<TaskModelUi> taskModelUis) {
                 adapter.updateTasks(taskModelUis);
+                tasks = taskModelUis;
             }
         });
     }
@@ -207,7 +208,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                     break;
 
             }
-            adapter.updateTasks(tasks);
+
+            mTaskViewModel.sortTaskList(tasks);
+
+            // adapter.updateTasks(tasks);
         }
     }
 

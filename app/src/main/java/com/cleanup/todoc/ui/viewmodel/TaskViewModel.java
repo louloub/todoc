@@ -34,8 +34,8 @@ public class TaskViewModel extends ViewModel {
     private TaskRepository mTaskRepository;
 
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
-    private TextView lblNoTasks;
-    private RecyclerView listTasks;
+    private TextView mLblNoTasks;
+    private RecyclerView mListTasks;
     private SortMethod sortMethod;
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
@@ -140,11 +140,11 @@ public class TaskViewModel extends ViewModel {
      */
     private void updateTasks() {
         if (taskModelUiList.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
+            mLblNoTasks.setVisibility(View.VISIBLE);
+            mListTasks.setVisibility(View.GONE);
         } else {
-            lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
+            mLblNoTasks.setVisibility(View.GONE);
+            mListTasks.setVisibility(View.VISIBLE);
             switch (sortMethod) {
                 case ALPHABETICAL:
                     Collections.sort(taskModelUiList, new TaskModelUi.TaskAZComparator());
@@ -162,6 +162,10 @@ public class TaskViewModel extends ViewModel {
             }
             mTaskModelUiMediatorLiveData.postValue(taskModelUiList);
         }
+    }
+
+    public void sortTaskList(List<TaskModelUi> tasks) {
+        mTaskModelUiMediatorLiveData.setValue(tasks);
     }
 
     /**
