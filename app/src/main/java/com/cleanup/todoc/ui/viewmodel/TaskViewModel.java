@@ -94,6 +94,7 @@ public class TaskViewModel extends ViewModel {
 
     public void deleteTask(TaskModelUi task){
         taskModelUiList.remove(task);
+        mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
     }
 
     public TaskViewModel(ProjectRoomRepository projectRoomRepository, final TaskRepository taskRepository) {
