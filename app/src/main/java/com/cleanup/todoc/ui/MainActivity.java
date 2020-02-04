@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * Updates the list of tasks in the UI
      */
-    private void updateTasks() {
+    /*private void updateTasks() {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
@@ -213,6 +213,38 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
             // adapter.updateTasks(tasks);
         }
+    }*/
+
+    private void updateTasks() {
+
+        mTaskViewModel.sortTaskList2(tasks,lblNoTasks,listTasks,sortMethod);
+
+        /*if (tasks.size() == 0) {
+            lblNoTasks.setVisibility(View.VISIBLE);
+            listTasks.setVisibility(View.GONE);
+        } else {
+            lblNoTasks.setVisibility(View.GONE);
+            listTasks.setVisibility(View.VISIBLE);
+            switch (sortMethod) {
+                case ALPHABETICAL:
+                    Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
+                    break;
+                case ALPHABETICAL_INVERTED:
+                    Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
+                    break;
+                case RECENT_FIRST:
+                    Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
+                    break;
+                case OLD_FIRST:
+                    Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
+                    break;
+
+            }
+
+            mTaskViewModel.sortTaskList(tasks);
+
+            // adapter.updateTasks(tasks);
+        }*/
     }
 
     /**
@@ -272,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * List of all possible sort methods for task
      */
-    private enum SortMethod {
+    public enum SortMethod {
         /**
          * Sort alphabetical by name
          */

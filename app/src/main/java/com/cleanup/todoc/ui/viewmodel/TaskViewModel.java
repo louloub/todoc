@@ -22,6 +22,7 @@ import com.cleanup.todoc.data.repository.ProjectRoomRepository;
 import com.cleanup.todoc.data.repository.TaskRepository;
 import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
+import com.cleanup.todoc.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,11 +37,13 @@ public class TaskViewModel extends ViewModel {
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
     private TextView mLblNoTasks;
     private RecyclerView mListTasks;
-    private SortMethod sortMethod;
+    private SortMethod sortMethod = SortMethod.NONE;
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
     }
+
+
 
     @NonNull
     private final ArrayList<TaskModelUi> taskModelUiList = new ArrayList<>();
@@ -166,6 +169,39 @@ public class TaskViewModel extends ViewModel {
 
     public void sortTaskList(List<TaskModelUi> tasks) {
         mTaskModelUiMediatorLiveData.setValue(tasks);
+    }
+
+    public void sortTaskList2(
+            List<TaskModelUi> tasks,
+            TextView lblNoTasks,
+            RecyclerView listTasks, MainActivity.SortMethod sortMethod) {
+        if (tasks.size() == 0) {
+            lblNoTasks.setVisibility(View.VISIBLE);
+            listTasks.setVisibility(View.GONE);
+        } else {
+            lblNoTasks.setVisibility(View.GONE);
+            listTasks.setVisibility(View.VISIBLE);
+            switch (sortMethod) {
+                case ALPHABETICAL:
+                    Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
+                    break;
+                case ALPHABETICAL_INVERTED:
+                    Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
+                    break;
+                case RECENT_FIRST:
+                    Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
+                    break;
+                case OLD_FIRST:
+                    Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
+                    break;
+            }
+
+            mTaskModelUiMediatorLiveData.setValue(tasks);
+
+            // mTaskViewModel.sortTaskList(tasks);
+
+            // adapter.updateTasks(tasks);
+        }
     }
 
     /**
