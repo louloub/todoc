@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.cleanup.todoc.data.model.Project;
 import com.cleanup.todoc.data.model.Task;
 import com.cleanup.todoc.data.repository.ProjectRepository;
+import com.cleanup.todoc.data.repository.ProjectRoomRepository;
 import com.cleanup.todoc.data.repository.TaskRepository;
 import com.cleanup.todoc.model.TaskModelUi;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class TaskViewModel extends ViewModel {
 
-    private ProjectRepository mProjectRepository;
+    private ProjectRoomRepository mProjectRoomRepository;
     private TaskRepository mTaskRepository;
 
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
@@ -29,11 +30,11 @@ public class TaskViewModel extends ViewModel {
         // TODO
     }
 
-    public TaskViewModel(ProjectRepository projectRepository, final TaskRepository taskRepository) {
-        this.mProjectRepository = projectRepository;
+    public TaskViewModel(ProjectRoomRepository projectRoomRepository, final TaskRepository taskRepository) {
+        this.mProjectRoomRepository = projectRoomRepository;
         this.mTaskRepository = taskRepository;
 
-        mTaskModelUiMediatorLiveData.addSource(mProjectRepository.getProjectListLiveData(), new Observer<List<Project>>() {
+        mTaskModelUiMediatorLiveData.addSource(mProjectRoomRepository.getProjectListLiveData(), new Observer<List<Project>>() {
             @Override
             public void onChanged(List<Project> projects) {
                 mTaskModelUiMediatorLiveData.setValue(combineProjectAndTask(projects,taskRepository.getTaskListLiveData().getValue()));
@@ -43,7 +44,7 @@ public class TaskViewModel extends ViewModel {
         mTaskModelUiMediatorLiveData.addSource(mTaskRepository.getTaskListLiveData(), new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> taskList) {
-                mTaskModelUiMediatorLiveData.setValue(combineProjectAndTask(mProjectRepository.getProjectListLiveData().getValue(),taskList));
+                mTaskModelUiMediatorLiveData.setValue(combineProjectAndTask(mProjectRoomRepository.getProjectListLiveData().getValue(),taskList));
             }
         });
     }

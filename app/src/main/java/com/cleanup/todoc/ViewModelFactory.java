@@ -5,7 +5,9 @@ package com.cleanup.todoc;
     import androidx.lifecycle.ViewModelProvider;
 
     import com.cleanup.todoc.data.repository.ProjectRepositoryImpl;
+    import com.cleanup.todoc.data.repository.ProjectRoomRepository;
     import com.cleanup.todoc.data.repository.TaskRepositoryImpl;
+    import com.cleanup.todoc.data.repository.TaskRoomRepository;
     import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
 
@@ -40,8 +42,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TaskViewModel.class)) {
             return (T) new TaskViewModel(
-                    new ProjectRepositoryImpl(),
-                    new TaskRepositoryImpl()
+                    new ProjectRoomRepository(),
+                    new TaskRoomRepository()
             );
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
