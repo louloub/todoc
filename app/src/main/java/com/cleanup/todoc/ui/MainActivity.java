@@ -164,7 +164,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * @param dialogInterface the current displayed dialog
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
-        // If dialog is open
+
+        // TODO ; déplacer dans viewModel ?
+
+        mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
+
+        /*// If dialog is open
         if (dialogEditText != null && dialogSpinner != null) {
             // Get the name of the task
             String taskName = dialogEditText.getText().toString();
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         // If dialog is aloready closed
         else {
             dialogInterface.dismiss();
-        }
+        }*/
     }
 
     /**
