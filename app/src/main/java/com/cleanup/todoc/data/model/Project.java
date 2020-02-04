@@ -4,14 +4,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(
-        foreignKeys = @ForeignKey(
-                entity = Task.class,
-                parentColumns = "id",
-                childColumns = "taskId",
-                onDelete = ForeignKey.CASCADE
-        )
-)
+@Entity
 public class Project {
 
     @PrimaryKey(autoGenerate = true)
@@ -19,11 +12,8 @@ public class Project {
 
     private String type;
 
-    private long taskId;
-
-    public Project(String type, long taskId) {
+    public Project(String type) {
         this.type = type;
-        this.taskId = taskId;
     }
 
     public void setId(int id) {
@@ -34,10 +24,6 @@ public class Project {
         this.type = type;
     }
 
-    public void setTaskId(long taskId) {
-        this.taskId = taskId;
-    }
-
     public int getId() {
         return id;
     }
@@ -46,7 +32,4 @@ public class Project {
         return type;
     }
 
-    public long getTaskId() {
-        return taskId;
-    }
 }

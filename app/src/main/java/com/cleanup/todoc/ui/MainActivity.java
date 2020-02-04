@@ -15,16 +15,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cleanup.todoc.R;
+import com.cleanup.todoc.ViewModelFactory;
 import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
+import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -33,6 +39,9 @@ import java.util.Date;
  * @author Gaëtan HERFRAY
  */
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
+
+    TaskViewModel mTaskViewModel;
+
     /**
      * List of all projects available in the application
      */
@@ -105,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             @Override
             public void onClick(View view) {
                 showAddTaskDialog();
+            }
+        });
+
+        mTaskViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(TaskViewModel.class);
+
+        mTaskViewModel.getTaskModelUiMediatorLiveData().observe(this, new Observer<List<TaskModelUi>>() {
+            @Override
+            public void onChanged(List<TaskModelUi> taskModelUis) {
+                adapter.updateTasks(taskModelUis);
             }
         });
     }
