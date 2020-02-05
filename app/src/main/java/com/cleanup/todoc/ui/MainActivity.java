@@ -94,7 +94,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             public void onChanged(List<TaskModelUi> taskModelUis) {
                 adapter.updateTasks(taskModelUis);
                 tasks = taskModelUis;
-                // updateTasks();
+                if (taskModelUis.isEmpty()){
+                    lblNoTasks.setVisibility(View.VISIBLE);
+                } else {
+                    lblNoTasks.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -132,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
         updateTasks();
-
     }
 
     private void showAddTaskDialog() {
