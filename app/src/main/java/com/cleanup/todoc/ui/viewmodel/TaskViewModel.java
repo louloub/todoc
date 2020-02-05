@@ -43,8 +43,6 @@ public class TaskViewModel extends ViewModel {
         return mTaskModelUiMediatorLiveData;
     }
 
-
-
     @NonNull
     private final ArrayList<TaskModelUi> taskModelUiList = new ArrayList<>();
 
