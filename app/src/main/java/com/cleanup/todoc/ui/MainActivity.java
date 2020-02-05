@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * The sort method to be used to display tasks
      */
     @NonNull
-    private SortMethod sortMethod = SortMethod.NONE;
+    public SortMethod sortMethod = SortMethod.NONE;
 
     /**
      * Dialog to create a new task
@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         mTaskViewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(TaskViewModel.class);
 
+        updateTasks();
+
         mTaskViewModel.getTaskModelUiMediatorLiveData().observe(this, new Observer<List<TaskModelUi>>() {
             @Override
             public void onChanged(List<TaskModelUi> taskModelUis) {
@@ -165,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
-        updateTasks();
-
+        // updateTasks();
     }
 
     /**
@@ -182,38 +183,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         populateDialogSpinner();
     }
-
-    /**
-     * Updates the list of tasks in the UI
-     */
-    /*private void updateTasks() {
-        if (tasks.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
-        } else {
-            lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
-                    break;
-
-            }
-
-            mTaskViewModel.updateTaskList(tasks);
-
-            // adapter.updateTasks(tasks);
-        }
-    }*/
 
     private void updateTasks() {
         mTaskViewModel.updateTaskList(tasks,lblNoTasks,listTasks,sortMethod);

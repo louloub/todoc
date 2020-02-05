@@ -37,18 +37,20 @@ public class TaskViewModel extends ViewModel {
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
     private TextView mLblNoTasks;
     private RecyclerView mListTasks;
-    private SortMethod sortMethod = SortMethod.NONE;
+    private MainActivity.SortMethod sortMethod = MainActivity.SortMethod.NONE;
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
     }
 
-
-
     @NonNull
     private final ArrayList<TaskModelUi> taskModelUiList = new ArrayList<>();
 
-    public void addNewTask(EditText dialogEditText, Spinner dialogSpinner, DialogInterface dialogInterface) {
+    public void addNewTask(
+            EditText dialogEditText,
+            Spinner dialogSpinner,
+            DialogInterface dialogInterface)
+    {
         // If dialog is open
         if (dialogEditText != null && dialogSpinner != null) {
             // Get the name of the task
@@ -70,7 +72,6 @@ public class TaskViewModel extends ViewModel {
                 // TODO: Replace this by id of persisted task
                 long id = (long) (Math.random() * 50000);
 
-
                 TaskModelUi task = new TaskModelUi(
                         id,
                         taskProject.getId(),
@@ -80,7 +81,9 @@ public class TaskViewModel extends ViewModel {
 
                 taskModelUiList.add(task);
 
-                mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
+                // mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
+
+                updateTaskList(taskModelUiList,mLblNoTasks,mListTasks,sortMethod);
 
                 dialogInterface.dismiss();
             }
@@ -97,7 +100,8 @@ public class TaskViewModel extends ViewModel {
 
     public void deleteTask(TaskModelUi task){
         taskModelUiList.remove(task);
-        mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
+        // mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
+        updateTaskList(taskModelUiList,mLblNoTasks,mListTasks,sortMethod);
     }
 
     public TaskViewModel(ProjectRoomRepository projectRoomRepository, final TaskRepository taskRepository) {
@@ -144,7 +148,17 @@ public class TaskViewModel extends ViewModel {
     public void updateTaskList(
             List<TaskModelUi> tasks,
             TextView lblNoTasks,
-            RecyclerView listTasks, MainActivity.SortMethod sortMethod) {
+            RecyclerView listTasks,
+            MainActivity.SortMethod sortMethod) {
+
+        if (mLblNoTasks==null) {
+            mLblNoTasks = lblNoTasks;
+        }
+
+        if (mListTasks==null){
+            mListTasks = listTasks;
+        }
+
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
