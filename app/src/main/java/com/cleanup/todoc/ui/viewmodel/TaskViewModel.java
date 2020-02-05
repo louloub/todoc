@@ -141,37 +141,7 @@ public class TaskViewModel extends ViewModel {
     /**
      * Updates the list of tasks in the UI
      */
-    private void updateTasks() {
-        if (taskModelUiList.size() == 0) {
-            mLblNoTasks.setVisibility(View.VISIBLE);
-            mListTasks.setVisibility(View.GONE);
-        } else {
-            mLblNoTasks.setVisibility(View.GONE);
-            mListTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(taskModelUiList, new TaskModelUi.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(taskModelUiList, new TaskModelUi.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(taskModelUiList, new TaskModelUi.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(taskModelUiList, new TaskModelUi.TaskOldComparator());
-                    break;
-
-            }
-            mTaskModelUiMediatorLiveData.postValue(taskModelUiList);
-        }
-    }
-
-    public void sortTaskList(List<TaskModelUi> tasks) {
-        mTaskModelUiMediatorLiveData.setValue(tasks);
-    }
-
-    public void sortTaskList2(
+    public void updateTaskList(
             List<TaskModelUi> tasks,
             TextView lblNoTasks,
             RecyclerView listTasks, MainActivity.SortMethod sortMethod) {
@@ -197,10 +167,6 @@ public class TaskViewModel extends ViewModel {
             }
 
             mTaskModelUiMediatorLiveData.setValue(tasks);
-
-            // mTaskViewModel.sortTaskList(tasks);
-
-            // adapter.updateTasks(tasks);
         }
     }
 

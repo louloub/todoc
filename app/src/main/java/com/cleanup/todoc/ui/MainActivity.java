@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,8 +27,6 @@ import com.cleanup.todoc.model.TaskModelUi;
 import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -212,42 +209,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
             }
 
-            mTaskViewModel.sortTaskList(tasks);
+            mTaskViewModel.updateTaskList(tasks);
 
             // adapter.updateTasks(tasks);
         }
     }*/
 
     private void updateTasks() {
-
-        mTaskViewModel.sortTaskList2(tasks,lblNoTasks,listTasks,sortMethod);
-
-        /*if (tasks.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
-        } else {
-            lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new TaskModelUi.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new TaskModelUi.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new TaskModelUi.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new TaskModelUi.TaskOldComparator());
-                    break;
-
-            }
-
-            mTaskViewModel.sortTaskList(tasks);
-
-            // adapter.updateTasks(tasks);
-        }*/
+        mTaskViewModel.updateTaskList(tasks,lblNoTasks,listTasks,sortMethod);
     }
 
     /**
