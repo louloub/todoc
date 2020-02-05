@@ -39,57 +39,30 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     TaskViewModel mTaskViewModel;
 
-    /**
-     * List of all projects available in the application
-     */
     private final ProjectModelUi[] allProjects = ProjectModelUi.getAllProjects();
 
-    /**
-     * List of all current tasks of the application
-     */
     @NonNull
     private List<TaskModelUi> tasks = new ArrayList<>();
 
-    /**
-     * The adapter which handles the list of tasks
-     */
     private final TasksAdapter adapter = new TasksAdapter(tasks, this);
 
-    /**
-     * The sort method to be used to display tasks
-     */
     @NonNull
     public SortMethod sortMethod = SortMethod.NONE;
 
-    /**
-     * Dialog to create a new task
-     */
     @Nullable
     public AlertDialog dialog = null;
 
-    /**
-     * EditText that allows user to set the name of a task
-     */
     @Nullable
     private EditText dialogEditText = null;
 
-    /**
-     * Spinner that allows the user to associate a project to a task
-     */
     @Nullable
     private Spinner dialogSpinner = null;
 
-    /**
-     * The RecyclerView which displays the list of tasks
-     */
     // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
     private RecyclerView listTasks;
 
-    /**
-     * The TextView displaying the empty state
-     */
     // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
@@ -118,12 +91,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         updateTasks();
 
+        adapter.notifyDataSetChanged();
+
         mTaskViewModel.getTaskModelUiMediatorLiveData().observe(this, new Observer<List<TaskModelUi>>() {
             @Override
             public void onChanged(List<TaskModelUi> taskModelUis) {
-                adapter.updateTasks(taskModelUis);
                 tasks = taskModelUis;
-                // updateTasks();
+                adapter.updateTasks(taskModelUis);
             }
         });
     }
@@ -158,21 +132,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mTaskViewModel.deleteTask(task);
     }
 
-    /**
-     * Called when the user clicks on the positive button of the Create TaskModelUi Dialog.
-     *
-     * Adds the given task to the list of created tasks.
-     *
-     * @param dialogInterface the current displayed dialog
-     */
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
-        // updateTasks();
     }
 
-    /**
-     * Shows the Dialog for adding a TaskModelUi
-     */
     private void showAddTaskDialog() {
         final AlertDialog dialog = getAddTaskDialog();
 
@@ -188,11 +151,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mTaskViewModel.updateTaskList(tasks,lblNoTasks,listTasks,sortMethod);
     }
 
-    /**
-     * Returns the dialog allowing the user to create a new task.
-     *
-     * @return the dialog allowing the user to create a new task
-     */
     @NonNull
     private AlertDialog getAddTaskDialog() {
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this, R.style.Dialog);
@@ -231,9 +189,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         return dialog;
     }
 
-    /**
-     * Sets the data of the Spinner with projects to associate to a new task
-     */
     private void populateDialogSpinner() {
         final ArrayAdapter<ProjectModelUi> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -242,9 +197,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         }
     }
 
-    /**
-     * List of all possible sort methods for task
-     */
     public enum SortMethod {
         /**
          * Sort alphabetical by name

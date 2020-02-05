@@ -81,8 +81,6 @@ public class TaskViewModel extends ViewModel {
 
                 taskModelUiList.add(task);
 
-                // mTaskModelUiMediatorLiveData.setValue(taskModelUiList);
-
                 updateTaskList(taskModelUiList,mLblNoTasks,mListTasks,sortMethod);
 
                 dialogInterface.dismiss();
@@ -139,6 +137,8 @@ public class TaskViewModel extends ViewModel {
             }
         }
 
+        updateTaskList(taskModelUi,mLblNoTasks,mListTasks,sortMethod);
+
         return taskModelUi;
     }
 
@@ -162,7 +162,7 @@ public class TaskViewModel extends ViewModel {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
-        } else {
+        } else  {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
             switch (sortMethod) {
