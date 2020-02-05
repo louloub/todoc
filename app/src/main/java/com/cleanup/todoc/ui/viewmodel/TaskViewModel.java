@@ -35,9 +35,6 @@ public class TaskViewModel extends ViewModel {
     private TaskRepository mTaskRepository;
 
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
-    private TextView mLblNoTasks;
-    private RecyclerView mListTasks;
-    private SortMethod sortMethod = SortMethod.NONE;
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
@@ -82,12 +79,10 @@ public class TaskViewModel extends ViewModel {
 
                 dialogInterface.dismiss();
             }
-            // If name has been set, but project has not been set (this should never occur)
             else{
                 dialogInterface.dismiss();
             }
         }
-        // If dialog is aloready closed
         else {
             dialogInterface.dismiss();
         }
@@ -136,9 +131,6 @@ public class TaskViewModel extends ViewModel {
         return taskModelUi;
     }
 
-    /**
-     * Updates the list of tasks in the UI
-     */
     public void updateTaskList(
             List<TaskModelUi> tasks,
             TextView lblNoTasks,
@@ -168,9 +160,6 @@ public class TaskViewModel extends ViewModel {
         }
     }
 
-    /**
-     * List of all possible sort methods for task
-     */
     private enum SortMethod {
         /**
          * Sort alphabetical by name
