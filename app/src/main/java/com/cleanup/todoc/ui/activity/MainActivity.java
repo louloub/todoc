@@ -40,34 +40,34 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     TaskViewModel mTaskViewModel;
 
-    private final ProjectModelUi[] allProjects = ProjectModelUi.getAllProjects();
+    private final ProjectModelUi[] mAllProjects = ProjectModelUi.getAllProjects();
 
     @NonNull
-    private List<TaskModelUi> tasks = new ArrayList<>();
+    private List<TaskModelUi> mTaskListUiModel = new ArrayList<>();
 
-    private final TasksAdapter adapter = new TasksAdapter(tasks, this);
+    private final TasksAdapter mTaskAdapter = new TasksAdapter(mTaskListUiModel, this);
 
     @NonNull
-    private SortMethod sortMethod = SortMethod.NONE;
+    private SortMethod mSortMethod = SortMethod.NONE;
 
     @Nullable
-    public AlertDialog dialog = null;
+    public AlertDialog mAlertDialog = null;
 
     @Nullable
-    private EditText dialogEditText = null;
+    private EditText mDialogEditText = null;
 
     @Nullable
-    private Spinner dialogSpinner = null;
+    private Spinner mDialogSpinner = null;
 
     // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
-    private RecyclerView listTasks;
+    private RecyclerView mRecyclerView;
 
     // Suppress warning is safe because variable is initialized in onCreate
     @SuppressWarnings("NullableProblems")
     @NonNull
-    private TextView lblNoTasks;
+    private TextView mTextViewNoTask;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         setContentView(R.layout.activity_main);
 
-        listTasks = findViewById(R.id.list_tasks);
-        lblNoTasks = findViewById(R.id.lbl_no_task);
+        mRecyclerView = findViewById(R.id.list_tasks);
+        mTextViewNoTask = findViewById(R.id.lbl_no_task);
 
-        listTasks.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        listTasks.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setAdapter(mTaskAdapter);
 
         findViewById(R.id.fab_add_task).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,13 +93,20 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mTaskViewModel.getTaskModelUiMediatorLiveData().observe(this, new Observer<List<TaskModelUi>>() {
             @Override
             public void onChanged(List<TaskModelUi> taskModelUis) {
-                adapter.updateTasks(taskModelUis);
-                tasks = taskModelUis;
+                mTaskAdapter.updateTasks(taskModelUis);
+                mTaskListUiModel = taskModelUis;
                 if (taskModelUis.isEmpty()){
-                    lblNoTasks.setVisibility(View.VISIBLE);
+                    mTextViewNoTask.setVisibility(View.VISIBLE);
                 } else {
-                    lblNoTasks.setVisibility(View.GONE);
+                    mTextViewNoTask.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        mTaskViewModel.getSortMethodLiveData().observe(this, new Observer<SortMethod>() {
+            @Override
+            public void onChanged(SortMethod sortMethod) {
+                mSortMethod = sortMethod;
             }
         });
     }
@@ -115,13 +122,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         int id = item.getItemId();
 
         if (id == R.id.filter_alphabetical) {
-            sortMethod = SortMethod.ALPHABETICAL;
+            mSortMethod = SortMethod.ALPHABETICAL;
         } else if (id == R.id.filter_alphabetical_inverted) {
-            sortMethod = SortMethod.ALPHABETICAL_INVERTED;
+            mSortMethod = SortMethod.ALPHABETICAL_INVERTED;
         } else if (id == R.id.filter_oldest_first) {
-            sortMethod = SortMethod.OLD_FIRST;
+            mSortMethod = SortMethod.OLD_FIRST;
         } else if (id == R.id.filter_recent_first) {
-            sortMethod = SortMethod.RECENT_FIRST;
+            mSortMethod = SortMethod.RECENT_FIRST;
         }
 
         updateTaskList();
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     }
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
-        mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
+        mTaskViewModel.addNewTask(mDialogEditText,mDialogSpinner,dialogInterface);
         updateTaskList();
     }
 
@@ -144,14 +151,14 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         dialog.show();
 
-        dialogEditText = dialog.findViewById(R.id.txt_task_name);
-        dialogSpinner = dialog.findViewById(R.id.project_spinner);
+        mDialogEditText = dialog.findViewById(R.id.txt_task_name);
+        mDialogSpinner = dialog.findViewById(R.id.project_spinner);
 
         populateDialogSpinner();
     }
 
     private void updateTaskList() {
-        mTaskViewModel.updateTaskList(tasks,lblNoTasks,listTasks,sortMethod);
+        mTaskViewModel.updateTaskList(mTaskListUiModel,mTextViewNoTask,mRecyclerView,mSortMethod);
     }
 
     @NonNull
@@ -164,39 +171,39 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         alertBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                dialogEditText = null;
-                dialogSpinner = null;
-                dialog = null;
+                mDialogEditText = null;
+                mDialogSpinner = null;
+                mAlertDialog = null;
             }
         });
 
-        dialog = alertBuilder.create();
+        mAlertDialog = alertBuilder.create();
 
         // This instead of listener to positive button in order to avoid automatic dismiss
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        mAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
             @Override
             public void onShow(DialogInterface dialogInterface) {
 
-                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button button = mAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
-                        onPositiveButtonClick(dialog);
+                        onPositiveButtonClick(mAlertDialog);
                     }
                 });
             }
         });
 
-        return dialog;
+        return mAlertDialog;
     }
 
     private void populateDialogSpinner() {
-        final ArrayAdapter<ProjectModelUi> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
+        final ArrayAdapter<ProjectModelUi> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mAllProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        if (dialogSpinner != null) {
-            dialogSpinner.setAdapter(adapter);
+        if (mDialogSpinner != null) {
+            mDialogSpinner.setAdapter(adapter);
         }
     }
 

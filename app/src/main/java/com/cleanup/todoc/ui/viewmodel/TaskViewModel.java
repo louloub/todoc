@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
 import com.cleanup.todoc.ui.activity.MainActivity;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,9 +35,14 @@ public class TaskViewModel extends ViewModel {
     private TaskRepository mTaskRepository;
 
     private MediatorLiveData<List<TaskModelUi>> mTaskModelUiMediatorLiveData = new MediatorLiveData<>();
+    private MutableLiveData<MainActivity.SortMethod> mSortMethodLiveData = new MutableLiveData<MainActivity.SortMethod>() {};
 
     public LiveData<List<TaskModelUi>> getTaskModelUiMediatorLiveData() {
         return mTaskModelUiMediatorLiveData;
+    }
+
+    public MutableLiveData<MainActivity.SortMethod> getSortMethodLiveData() {
+        return mSortMethodLiveData;
     }
 
     @NonNull
@@ -132,7 +139,8 @@ public class TaskViewModel extends ViewModel {
     public void updateTaskList(
             List<TaskModelUi> tasks,
             TextView lblNoTasks,
-            RecyclerView listTasks, MainActivity.SortMethod sortMethod) {
+            RecyclerView listTasks,
+            MainActivity.SortMethod sortMethod) {
         if (tasks.size() == 0) {
             lblNoTasks.setVisibility(View.VISIBLE);
             listTasks.setVisibility(View.GONE);
@@ -154,6 +162,7 @@ public class TaskViewModel extends ViewModel {
                     break;
             }
 
+            mSortMethodLiveData.setValue(sortMethod);
             mTaskModelUiMediatorLiveData.setValue(tasks);
         }
     }
