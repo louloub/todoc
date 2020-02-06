@@ -1,7 +1,5 @@
 package com.cleanup.todoc.ui.viewmodel;
 
-import android.app.MediaRouteButton;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +20,7 @@ import com.cleanup.todoc.data.repository.ProjectRoomRepository;
 import com.cleanup.todoc.data.repository.TaskRepository;
 import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
-import com.cleanup.todoc.ui.MainActivity;
+import com.cleanup.todoc.ui.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;

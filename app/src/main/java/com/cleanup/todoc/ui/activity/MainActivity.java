@@ -1,4 +1,4 @@
-package com.cleanup.todoc.ui;
+package com.cleanup.todoc.ui.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import com.cleanup.todoc.R;
 import com.cleanup.todoc.ViewModelFactory;
 import com.cleanup.todoc.model.ProjectModelUi;
 import com.cleanup.todoc.model.TaskModelUi;
+import com.cleanup.todoc.ui.adapter.TasksAdapter;
 import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             sortMethod = SortMethod.RECENT_FIRST;
         }
 
-        updateTasks();
+        updateTaskList();
 
         return super.onOptionsItemSelected(item);
     }
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private void onPositiveButtonClick(DialogInterface dialogInterface) {
         mTaskViewModel.addNewTask(dialogEditText,dialogSpinner,dialogInterface);
-        updateTasks();
+        updateTaskList();
     }
 
     private void showAddTaskDialog() {
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         populateDialogSpinner();
     }
 
-    private void updateTasks() {
+    private void updateTaskList() {
         mTaskViewModel.updateTaskList(tasks,lblNoTasks,listTasks,sortMethod);
     }
 
