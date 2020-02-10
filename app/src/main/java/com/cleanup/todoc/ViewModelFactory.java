@@ -1,6 +1,6 @@
 package com.cleanup.todoc;
 
-    import androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
     import androidx.lifecycle.ViewModel;
     import androidx.lifecycle.ViewModelProvider;
 
@@ -10,11 +10,9 @@ package com.cleanup.todoc;
     import com.cleanup.todoc.data.repository.TaskRoomRepository;
     import com.cleanup.todoc.ui.viewmodel.TaskViewModel;
 
-
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private static ViewModelFactory sFactory;
-
 
     private ViewModelFactory(
 

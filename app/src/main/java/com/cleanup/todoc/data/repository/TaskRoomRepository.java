@@ -17,7 +17,7 @@ import java.util.List;
 public class TaskRoomRepository implements TaskRepository {
 
     private TaskDao mTaskDao;
-    private LiveData<List<Task>> mTaskListLiveData = new MutableLiveData<>();
+    private LiveData<List<Task>> mTaskListLiveData;
 
     public TaskRoomRepository() {
         AppDatabase db = AppDatabase.getInstance();

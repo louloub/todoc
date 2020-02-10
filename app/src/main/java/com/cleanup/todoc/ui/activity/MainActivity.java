@@ -92,10 +92,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         mTaskViewModel.getTaskModelUiMediatorLiveData().observe(this, new Observer<List<TaskModelUi>>() {
             @Override
-            public void onChanged(List<TaskModelUi> taskModelUis) {
-                mTaskAdapter.updateTasks(taskModelUis);
-                mTaskListUiModel = taskModelUis;
-                if (taskModelUis.isEmpty()){
+            public void onChanged(List<TaskModelUi> taskModelUiList) {
+                mTaskAdapter.updateTasks(taskModelUiList);
+                mTaskListUiModel = taskModelUiList;
+                if (taskModelUiList.isEmpty()){
                     mTextViewNoTask.setVisibility(View.VISIBLE);
                 } else {
                     mTextViewNoTask.setVisibility(View.GONE);
