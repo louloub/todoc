@@ -45,6 +45,7 @@ public class TaskViewModel extends ViewModel {
         return mSortMethodLiveData;
     }
 
+
     @NonNull
     private final ArrayList<TaskModelUi> taskModelUiList = new ArrayList<>();
 
